@@ -1,358 +1,345 @@
 <!DOCTYPE html>
 <html lang="it">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Calcolatore Investimenti</title>
     <style>
-        :root {
-            --bg-primary: #121212;
-            --bg-secondary: #1e1e1e;
-            --text-primary: #ffffff;
-            --text-secondary: #b0b0b0;
-            --accent: #00c790;
-            --red: #ff5252;
-            --border: #2c2c2c;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-        }
-        
-        body {
-            background-color: var(--bg-primary);
-            color: var(--text-primary);
-            padding: 20px;
-            max-width: 500px;
-            margin: 0 auto;
-        }
-        
-        .header {
-            text-align: center;
-            margin-bottom: 24px;
-        }
-        
-        .header h1 {
-            font-size: 24px;
-            margin-bottom: 4px;
-        }
-        
-        .header p {
-            color: var(--text-secondary);
-            font-size: 14px;
-        }
-        
-        .input-group {
-            margin-bottom: 16px;
-            background-color: var(--bg-secondary);
-            border-radius: 12px;
-            padding: 16px;
-        }
-        
-        .input-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: var(--text-secondary);
-            font-size: 14px;
-        }
-        
-        .input-field {
-            position: relative;
-            margin-bottom: 8px;
-        }
-        
-        .input-field input {
-            width: 100%;
-            background-color: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 12px;
-            color: var(--text-primary);
-            font-size: 16px;
-            outline: none;
-        }
-        
-        .input-field input:focus {
-            border-color: var(--accent);
-        }
-        
-        .input-field span {
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-secondary);
-        }
-        
-        .result-card {
-            background-color: var(--bg-secondary);
-            border-radius: 12px;
-            padding: 20px;
-            margin-top: 20px;
-        }
-        
-        .result-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 12px;
-        }
-        
-        .result-label {
-            color: var(--text-secondary);
-        }
-        
-        .result-value {
-            font-weight: bold;
-        }
-        
-        .profit {
-            color: var(--accent);
-        }
-        
-        .loss {
-            color: var(--red);
-        }
-        
-        .calculate-btn {
-            background-color: var(--accent);
-            color: #000;
-            border: none;
-            border-radius: 8px;
-            padding: 14px;
-            width: 100%;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 12px;
-        }
-        
-        .tab-container {
-            display: flex;
-            margin-bottom: 20px;
-            border-radius: 8px;
-            overflow: hidden;
-            background-color: var(--bg-secondary);
-        }
-        
-        .tab-btn {
-            flex: 1;
-            background-color: var(--bg-secondary);
-            color: var(--text-secondary);
-            border: none;
-            padding: 12px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-        
-        .tab-btn.active {
-            background-color: var(--bg-secondary);
-            color: var(--accent);
-            border-bottom: 2px solid var(--accent);
-        }
-        
-        .tab-content {
-            display: none;
-        }
-        
-        .tab-content.active {
-            display: block;
-        }
-        
-        .percentage-result {
-            text-align: center;
-            font-size: 20px;
-            margin-top: 12px;
-            font-weight: bold;
-        }
+      :root {
+        --bg-primary: #121212;
+        --bg-secondary: #1e1e1e;
+        --text-primary: #ffffff;
+        --text-secondary: #b0b0b0;
+        --accent: #00c790;
+        --red: #ff5252;
+        --border: #2c2c2c;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Oxygen, Ubuntu, Cantarell, sans-serif;
+      }
+
+      body {
+        background-color: var(--bg-primary);
+        color: var(--text-primary);
+        padding: 20px;
+        max-width: 500px;
+        margin: 0 auto;
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 24px;
+      }
+
+      .header h1 {
+        font-size: 24px;
+        margin-bottom: 4px;
+      }
+
+      .header p {
+        color: var(--text-secondary);
+        font-size: 14px;
+      }
+
+      .input-group {
+        margin-bottom: 16px;
+        background-color: var(--bg-secondary);
+        border-radius: 12px;
+        padding: 16px;
+      }
+
+      .input-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--text-secondary);
+        font-size: 14px;
+      }
+
+      .input-field {
+        position: relative;
+        margin-bottom: 8px;
+      }
+
+      .input-field input {
+        width: 100%;
+        background-color: var(--bg-secondary);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 12px;
+        color: var(--text-primary);
+        font-size: 16px;
+        outline: none;
+      }
+
+      .input-field input:focus {
+        border-color: var(--accent);
+      }
+
+      .input-field span {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-secondary);
+      }
+
+      .result-card {
+        background-color: var(--bg-secondary);
+        border-radius: 12px;
+        padding: 20px;
+        margin-top: 20px;
+      }
+
+      .result-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 12px;
+      }
+
+      .result-label {
+        color: var(--text-secondary);
+      }
+
+      .result-value {
+        font-weight: bold;
+      }
+
+      .profit {
+        color: var(--accent);
+      }
+
+      .loss {
+        color: var(--red);
+      }
+
+      .calculate-btn {
+        background-color: var(--accent);
+        color: #000;
+        border: none;
+        border-radius: 8px;
+        padding: 14px;
+        width: 100%;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 12px;
+      }
+
+      .tab-container {
+        display: flex;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        overflow: hidden;
+        background-color: var(--bg-secondary);
+      }
+
+      .tab-btn {
+        flex: 1;
+        background-color: var(--bg-secondary);
+        color: var(--text-secondary);
+        border: none;
+        padding: 12px;
+        cursor: pointer;
+        font-size: 14px;
+      }
+
+      .tab-btn.active {
+        background-color: var(--bg-secondary);
+        color: var(--accent);
+        border-bottom: 2px solid var(--accent);
+      }
+
+      .tab-content {
+        display: none;
+      }
+
+      .tab-content.active {
+        display: block;
+      }
+
+      .percentage-result {
+        text-align: center;
+        font-size: 20px;
+        margin-top: 12px;
+        font-weight: bold;
+      }
     </style>
-</head>
-<body>
-    <div class="header">
-        <h1>Calcolatore Investimenti</h1>
-        <p>Calcola il tuo profitto reale</p>
-    </div>
+  </head>
+  <body>
     
-    <div class="tab-container">
-        <button class="tab-btn active" onclick="changeTab('calculator')">Calcolatore</button>
-        <button class="tab-btn" onclick="changeTab('percentage')">Conversione %</button>
-    </div>
-    
+
+
     <div id="calculator" class="tab-content active">
-        <div class="input-group">
-            <label>Investimento iniziale</label>
-            <div class="input-field">
-                <input type="number" id="investment" placeholder="Es. 1000">
-                <span>€</span>
-            </div>
-            
-            <label>Prezzo di acquisto</label>
-            <div class="input-field">
-                <input type="number" id="buyPrice" placeholder="Es. 5">
-                <span>€</span>
-            </div>
-            
-            <label>Prezzo di vendita</label>
-            <div class="input-field">
-                <input type="number" id="sellPrice" placeholder="Es. 10">
-                <span>€</span>
-            </div>
-            
-            <label>Commissioni totali</label>
-            <div class="input-field">
-                <input type="number" id="fee" placeholder="Es. 2">
-                <span>€</span>
-            </div>
-            
-            <button class="calculate-btn" onclick="calculateProfit()">Calcola</button>
+      <div class="input-group">
+        <label>Investimento iniziale</label>
+        <div class="input-field">
+          <input type="number" id="investment" placeholder="Es. 1000" />
+          <span>€</span>
         </div>
-        
-        <div class="result-card">
-            <div class="result-row">
-                <div class="result-label">Valore iniziale</div>
-                <div class="result-value" id="initialValue">0.00 €</div>
-            </div>
-            
-            <div class="result-row">
-                <div class="result-label">Valore finale</div>
-                <div class="result-value" id="finalValue">0.00 €</div>
-            </div>
-            
-            <div class="result-row">
-                <div class="result-label">Commissioni</div>
-                <div class="result-value" id="feeValue">0.00 €</div>
-            </div>
-            
-            <div class="result-row">
-                <div class="result-label">Profitto netto</div>
-                <div class="result-value" id="netProfit">0.00 €</div>
-            </div>
-            
-            <div class="result-row">
-                <div class="result-label">ROI</div>
-                <div class="result-value" id="roi">0.00%</div>
-            </div>
+
+        <label>Prezzo di acquisto</label>
+        <div class="input-field">
+          <input type="number" id="buyPrice" placeholder="Es. 5" />
+          <span>€</span>
         </div>
+
+        <label>Prezzo di vendita</label>
+        <div class="input-field">
+          <input type="number" id="sellPrice" placeholder="Es. 10" />
+          <span>€</span>
+        </div>
+
+        <label>Commissioni totali</label>
+        <div class="input-field">
+          <input type="number" id="fee" placeholder="Es. 2" value="2" />
+          <span>€</span>
+        </div>
+
+        <button class="calculate-btn" onclick="calculateProfit()">
+          Calcola
+        </button>
+      </div>
+
+      <div class="result-card">
+        <div class="result-row">
+          <div class="result-label">Valore iniziale</div>
+          <div class="result-value" id="initialValue">0.00 €</div>
+        </div>
+
+        <div class="result-row">
+          <div class="result-label">Valore finale</div>
+          <div class="result-value" id="finalValue">0.00 €</div>
+        </div>
+
+        <div class="result-row">
+          <div class="result-label">Commissioni</div>
+          <div class="result-value" id="feeValue">0.00 €</div>
+        </div>
+
+        <div class="result-row">
+          <div class="result-label">Profitto netto</div>
+          <div class="result-value" id="netProfit">0.00 €</div>
+        </div>
+
+        <div class="result-row">
+          <div class="result-label">ROI</div>
+          <div class="result-value" id="roi">0.00%</div>
+        </div>
+      </div>
     </div>
-    
-    <div id="percentage" class="tab-content">
-        <div class="input-group">
-            <label>Conversione Prezzo a Percentuale</label>
-            <div class="input-field">
-                <input type="number" id="priceFrom" placeholder="Prezzo iniziale">
-                <span>€</span>
-            </div>
-            
-            <div class="input-field">
-                <input type="number" id="priceTo" placeholder="Prezzo finale">
-                <span>€</span>
-            </div>
-            
-            <button class="calculate-btn" onclick="calculatePercentage()">Converti</button>
-            
-            <div class="percentage-result" id="percentageResult">0.00%</div>
-        </div>
-    </div>
-    
+
     <script>
-        function changeTab(tabName) {
-            // Nasconde tutti i contenuti delle tab
-            const tabContents = document.querySelectorAll('.tab-content');
-            tabContents.forEach(tab => {
-                tab.classList.remove('active');
-            });
-            
-            // Rimuove la classe active da tutti i pulsanti tab
-            const tabButtons = document.querySelectorAll('.tab-btn');
-            tabButtons.forEach(button => {
-                button.classList.remove('active');
-            });
-            
-            // Attiva la tab selezionata
-            document.getElementById(tabName).classList.add('active');
-            
-            // Aggiunge la classe active al pulsante corrispondente
-            document.querySelector(`.tab-btn[onclick="changeTab('${tabName}')"]`).classList.add('active');
+      function changeTab(tabName) {
+        // Nasconde tutti i contenuti delle tab
+        const tabContents = document.querySelectorAll(".tab-content");
+        tabContents.forEach((tab) => {
+          tab.classList.remove("active");
+        });
+
+        // Rimuove la classe active da tutti i pulsanti tab
+        const tabButtons = document.querySelectorAll(".tab-btn");
+        tabButtons.forEach((button) => {
+          button.classList.remove("active");
+        });
+
+        // Attiva la tab selezionata
+        document.getElementById(tabName).classList.add("active");
+
+        // Aggiunge la classe active al pulsante corrispondente
+        document
+          .querySelector(`.tab-btn[onclick="changeTab('${tabName}')"]`)
+          .classList.add("active");
+      }
+
+      function calculateProfit() {
+        // Recupera i valori di input
+        const investment =
+          parseFloat(document.getElementById("investment").value) || 0;
+        const buyPrice =
+          parseFloat(document.getElementById("buyPrice").value) || 0;
+        const sellPrice =
+          parseFloat(document.getElementById("sellPrice").value) || 0;
+        const fee = parseFloat(document.getElementById("fee").value) || 0;
+
+        // Calcola il numero di azioni acquistate
+        const sharesBought = investment / buyPrice;
+
+        // Calcola il valore finale
+        const finalValue = sharesBought * sellPrice;
+
+        // Calcola il profitto netto
+        const netProfit = finalValue - investment - fee;
+
+        // Calcola ROI
+        const roi = (netProfit / investment) * 100;
+
+        // Aggiorna i risultati
+        document.getElementById("initialValue").textContent =
+          investment.toFixed(2) + " €";
+        document.getElementById("finalValue").textContent =
+          finalValue.toFixed(2) + " €";
+        document.getElementById("feeValue").textContent = fee.toFixed(2) + " €";
+
+        const netProfitElement = document.getElementById("netProfit");
+        netProfitElement.textContent = netProfit.toFixed(2) + " €";
+
+        // Colora il profitto in base al risultato
+        if (netProfit > 0) {
+          netProfitElement.className = "result-value profit";
+        } else if (netProfit < 0) {
+          netProfitElement.className = "result-value loss";
+        } else {
+          netProfitElement.className = "result-value";
         }
-        
-        function calculateProfit() {
-            // Recupera i valori di input
-            const investment = parseFloat(document.getElementById('investment').value) || 0;
-            const buyPrice = parseFloat(document.getElementById('buyPrice').value) || 0;
-            const sellPrice = parseFloat(document.getElementById('sellPrice').value) || 0;
-            const fee = parseFloat(document.getElementById('fee').value) || 0;
-            
-            // Calcola il numero di azioni acquistate
-            const sharesBought = investment / buyPrice;
-            
-            // Calcola il valore finale
-            const finalValue = sharesBought * sellPrice;
-            
-            // Calcola il profitto netto
-            const netProfit = finalValue - investment - fee;
-            
-            // Calcola ROI
-            const roi = (netProfit / investment) * 100;
-            
-            // Aggiorna i risultati
-            document.getElementById('initialValue').textContent = investment.toFixed(2) + ' €';
-            document.getElementById('finalValue').textContent = finalValue.toFixed(2) + ' €';
-            document.getElementById('feeValue').textContent = fee.toFixed(2) + ' €';
-            
-            const netProfitElement = document.getElementById('netProfit');
-            netProfitElement.textContent = netProfit.toFixed(2) + ' €';
-            
-            // Colora il profitto in base al risultato
-            if (netProfit > 0) {
-                netProfitElement.className = 'result-value profit';
-            } else if (netProfit < 0) {
-                netProfitElement.className = 'result-value loss';
-            } else {
-                netProfitElement.className = 'result-value';
-            }
-            
-            const roiElement = document.getElementById('roi');
-            roiElement.textContent = roi.toFixed(2) + '%';
-            
-            // Colora il ROI in base al risultato
-            if (roi > 0) {
-                roiElement.className = 'result-value profit';
-            } else if (roi < 0) {
-                roiElement.className = 'result-value loss';
-            } else {
-                roiElement.className = 'result-value';
-            }
+
+        const roiElement = document.getElementById("roi");
+        roiElement.textContent = roi.toFixed(2) + "%";
+
+        // Colora il ROI in base al risultato
+        if (roi > 0) {
+          roiElement.className = "result-value profit";
+        } else if (roi < 0) {
+          roiElement.className = "result-value loss";
+        } else {
+          roiElement.className = "result-value";
         }
-        
-        function calculatePercentage() {
-            // Recupera i valori di input
-            const priceFrom = parseFloat(document.getElementById('priceFrom').value) || 0;
-            const priceTo = parseFloat(document.getElementById('priceTo').value) || 0;
-            
-            // Evita divisione per zero
-            if (priceFrom === 0) {
-                document.getElementById('percentageResult').textContent = "Errore: prezzo iniziale non può essere zero";
-                return;
-            }
-            
-            // Calcola la variazione percentuale
-            const percentageChange = ((priceTo - priceFrom) / priceFrom) * 100;
-            
-            // Aggiorna il risultato
-            const resultElement = document.getElementById('percentageResult');
-            resultElement.textContent = percentageChange.toFixed(2) + '%';
-            
-            // Colora il risultato in base al valore
-            if (percentageChange > 0) {
-                resultElement.className = 'percentage-result profit';
-            } else if (percentageChange < 0) {
-                resultElement.className = 'percentage-result loss';
-            } else {
-                resultElement.className = 'percentage-result';
-            }
+      }
+
+      function calculatePercentage() {
+        // Recupera i valori di input
+        const priceFrom =
+          parseFloat(document.getElementById("priceFrom").value) || 0;
+        const priceTo =
+          parseFloat(document.getElementById("priceTo").value) || 0;
+
+        // Evita divisione per zero
+        if (priceFrom === 0) {
+          document.getElementById("percentageResult").textContent =
+            "Errore: prezzo iniziale non può essere zero";
+          return;
         }
+
+        // Calcola la variazione percentuale
+        const percentageChange = ((priceTo - priceFrom) / priceFrom) * 100;
+
+        // Aggiorna il risultato
+        const resultElement = document.getElementById("percentageResult");
+        resultElement.textContent = percentageChange.toFixed(2) + "%";
+
+        // Colora il risultato in base al valore
+        if (percentageChange > 0) {
+          resultElement.className = "percentage-result profit";
+        } else if (percentageChange < 0) {
+          resultElement.className = "percentage-result loss";
+        } else {
+          resultElement.className = "percentage-result";
+        }
+      }
     </script>
-</body>
+  </body>
 </html>

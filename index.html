@@ -122,19 +122,6 @@
         color: var(--red);
       }
 
-      .calculate-btn {
-        background-color: var(--accent);
-        color: #000;
-        border: none;
-        border-radius: 8px;
-        padding: 14px;
-        width: 100%;
-        font-size: 16px;
-        font-weight: bold;
-        cursor: pointer;
-        margin-top: 12px;
-      }
-
       .tab-container {
         display: flex;
         margin-bottom: 20px;
@@ -169,45 +156,77 @@
 
       .percentage-result {
         text-align: center;
-        font-size: 20px;
-        margin-top: 12px;
+
+
         font-weight: bold;
+      }
+      
+      .spread-details {
+        margin-top: 16px;
+        font-size: 14px;
+        color: var(--text-secondary);
+        line-height: 1.5;
+      }
+      
+      .tab-bar {
+        display: flex;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        overflow: hidden;
+        background-color: var(--bg-secondary);
+      }
+      
+      .tab-option {
+        flex: 1;
+        background-color: var(--bg-secondary);
+        color: var(--text-secondary);
+        border: none;
+        padding: 12px;
+        cursor: pointer;
+        font-size: 14px;
+        text-align: center;
+      }
+      
+      .tab-option.active {
+        background-color: var(--bg-secondary);
+        color: var(--accent);
+        border-bottom: 2px solid var(--accent);
       }
     </style>
   </head>
   <body>
-    
 
+    <div class="tab-bar">
+      <div class="tab-option active" id="tab-calculator" onclick="switchTab('calculator')">Calcolatore</div>
+      <div class="tab-option" id="tab-spread" onclick="switchTab('spread')">Spread</div>
+
+    </div>
 
     <div id="calculator" class="tab-content active">
       <div class="input-group">
         <label>Investimento iniziale</label>
         <div class="input-field">
-          <input type="number" id="investment" placeholder="Es. 1000" />
+          <input type="number" id="investment" placeholder="Es. 1000" oninput="calculateProfit()" />
           <span>€</span>
         </div>
 
         <label>Prezzo di acquisto</label>
         <div class="input-field">
-          <input type="number" id="buyPrice" placeholder="Es. 5" />
+          <input type="number" id="buyPrice" placeholder="Es. 5" oninput="calculateProfit()" />
           <span>€</span>
         </div>
 
         <label>Prezzo di vendita</label>
         <div class="input-field">
-          <input type="number" id="sellPrice" placeholder="Es. 10" />
+          <input type="number" id="sellPrice" placeholder="Es. 10" oninput="calculateProfit()" />
           <span>€</span>
         </div>
 
         <label>Commissioni totali</label>
         <div class="input-field">
-          <input type="number" id="fee" placeholder="Es. 2" value="2" />
+          <input type="number" id="fee" placeholder="Es. 2" value="2" oninput="calculateProfit()" />
           <span>€</span>
         </div>
-
-        <button class="calculate-btn" onclick="calculateProfit()">
-          Calcola
-        </button>
       </div>
 
       <div class="result-card">
@@ -237,9 +256,51 @@
         </div>
       </div>
     </div>
+    
+    <div id="spread" class="tab-content">
+      <div class="input-group">
+        <label>Calcolo Spread</label>
+        <div class="input-field">
+          <input type="number" id="bidPrice" placeholder="Prezzo bid (denaro)" step="0.0001" oninput="calculateSpread()" />
+          <span>€</span>
+        </div>
+        
+        <div class="input-field">
+          <input type="number" id="askPrice" placeholder="Prezzo ask (lettera)" step="0.0001" oninput="calculateSpread()" />
+          <span>€</span>
+        </div>
+
+        
+        <div class="spread-details" id="spreadDetails"></div>
+        
+      </div>
+      <div class="result-card">
+        <div class="result-row">
+          <div class="result-label">Bid (denaro)</div>
+          <div class="result-value" id="bid">0.00 €</div>
+        </div>
+
+        <div class="result-row">
+          <div class="result-label">Ask (lettera)</div>
+          <div class="result-value" id="ask">0.00 €</div>
+        </div>
+
+        <div class="result-row">
+          <div class="result-label">Spread €</div>
+          <div class="result-value" id="spreadAbsolute">0.00 €</div>
+        </div>
+
+        <div class="result-row">
+          <div class="result-label">Spread %</div>
+          <div class="result-value" id="spreadResult">0.00 %</div>
+        </div>
+      </div>
+    </div>
+    
+
 
     <script>
-      function changeTab(tabName) {
+      function switchTab(tabName) {
         // Nasconde tutti i contenuti delle tab
         const tabContents = document.querySelectorAll(".tab-content");
         tabContents.forEach((tab) => {
@@ -247,18 +308,14 @@
         });
 
         // Rimuove la classe active da tutti i pulsanti tab
-        const tabButtons = document.querySelectorAll(".tab-btn");
-        tabButtons.forEach((button) => {
-          button.classList.remove("active");
+        const tabOptions = document.querySelectorAll(".tab-option");
+        tabOptions.forEach((option) => {
+          option.classList.remove("active");
         });
 
         // Attiva la tab selezionata
         document.getElementById(tabName).classList.add("active");
-
-        // Aggiunge la classe active al pulsante corrispondente
-        document
-          .querySelector(`.tab-btn[onclick="changeTab('${tabName}')"]`)
-          .classList.add("active");
+        document.getElementById("tab-" + tabName).classList.add("active");
       }
 
       function calculateProfit() {
@@ -272,7 +329,7 @@
         const fee = parseFloat(document.getElementById("fee").value) || 0;
 
         // Calcola il numero di azioni acquistate
-        const sharesBought = investment / buyPrice;
+        const sharesBought = buyPrice === 0 ? 0 : investment / buyPrice;
 
         // Calcola il valore finale
         const finalValue = sharesBought * sellPrice;
@@ -281,7 +338,7 @@
         const netProfit = finalValue - investment - fee;
 
         // Calcola ROI
-        const roi = (netProfit / investment) * 100;
+        const roi = investment === 0 ? 0 : (netProfit / investment) * 100;
 
         // Aggiorna i risultati
         document.getElementById("initialValue").textContent =
@@ -314,6 +371,42 @@
           roiElement.className = "result-value";
         }
       }
+      
+      function calculateSpread() {
+        // Recupera i valori di input
+        const bidPrice = parseFloat(document.getElementById("bidPrice").value) || 0;
+        const askPrice = parseFloat(document.getElementById("askPrice").value) || 0;
+        
+        // Evita divisione per zero e calcoli quando mancano dati
+        if (bidPrice === 0 || askPrice === 0) {
+          document.getElementById("spreadResult").textContent = "0.00%";
+          document.getElementById("spreadDetails").textContent = "";
+          return;
+        }
+        
+        // Calcola lo spread assoluto
+        const absoluteSpread = askPrice - bidPrice;
+        
+        // Calcola lo spread percentuale
+        const spreadPercentage = (absoluteSpread / ((askPrice + bidPrice) / 2)) * 100;
+        
+        // Aggiorna il risultato
+        const resultElement = document.getElementById("spreadResult");
+        resultElement.textContent = spreadPercentage.toFixed(2) + "%";
+
+        document.getElementById("bid").textContent = bidPrice;
+        document.getElementById("ask").textContent = askPrice;
+        document.getElementById("spreadAbsolute").textContent = absoluteSpread;
+    
+        // Colora il risultato in base al valore
+        if (spreadPercentage > 1) {
+          resultElement.className = "percentage-result loss";
+        } else if (spreadPercentage > 0.5) {
+          resultElement.className = "percentage-result";
+        } else {
+          resultElement.className = "percentage-result profit";
+        }
+      }
 
       function calculatePercentage() {
         // Recupera i valori di input
@@ -324,8 +417,7 @@
 
         // Evita divisione per zero
         if (priceFrom === 0) {
-          document.getElementById("percentageResult").textContent =
-            "Errore: prezzo iniziale non può essere zero";
+          document.getElementById("percentageResult").textContent = "0.00%";
           return;
         }
 
@@ -345,6 +437,13 @@
           resultElement.className = "percentage-result";
         }
       }
+      
+      // Inizializza i calcoli al caricamento della pagina
+      document.addEventListener("DOMContentLoaded", function() {
+        calculateProfit();
+        calculateSpread();
+        calculatePercentage();
+      });
     </script>
   </body>
 </html>
